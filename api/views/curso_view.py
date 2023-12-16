@@ -7,7 +7,7 @@ from api import api
 
 class Cursos(Resource):
     def get(self):
-        cursos = curso_service.listar_cursos()
+        cursos = curso_service.listar_cursos() 
         cs = curso_schema.CursoSchema(many=True)
 
         return make_response(cs.jsonify(cursos), 200)
