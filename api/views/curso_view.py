@@ -58,8 +58,13 @@ class CursoDetail(Resource):
 
             return make_response(cs.jsonify(curso_atualizado), 200)
 
-    def delete(self):
-        pass
+    def delete(self, id):
+        curso_db = curso_service.listar_curso_id(id)
+        if curso_db is None:
+            return make_response(jsonify("Curso não encontrado."), 404)
+
+        curso_service.remover_curso(curso_db)
+        return make_response('Curso removido com sucesso.', 202)
 
 api.add_resource(Cursos, '/cursos')
 api.add_resource(CursoDetail, '/cursos/<int:id>')
