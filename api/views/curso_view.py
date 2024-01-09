@@ -7,7 +7,7 @@ from api import api
 
 class Cursos(Resource):
     def get(self):
-        cursos = curso_service.listar_cursos() 
+        cursos = curso_service.listar_cursos()
         cs = curso_schema.CursoSchema(many=True)
 
         return make_response(cs.jsonify(cursos), 200)
@@ -29,4 +29,20 @@ class Cursos(Resource):
 
             return make_response(cs.jsonify(resultado), 201)
 
+class CursoDetail(Resource):
+    def get(self, id):
+        curso = curso_service.listar_curso_id(id)
+        if curso is None:
+            return make_response(jsonify("Curso não encontrado."), 404)
+
+        cs = curso_schema.CursoSchema()
+        return make_response(cs.jsonify(curso), 200)
+
+    def put(self):
+        pass
+
+    def delete(self):
+        pass
+
 api.add_resource(Cursos, '/cursos')
+api.add_resource(CursoDetail, '/cursos/<int:id>')
