@@ -38,8 +38,25 @@ class CursoDetail(Resource):
         cs = curso_schema.CursoSchema()
         return make_response(cs.jsonify(curso), 200)
 
-    def put(self):
-        pass
+    def put(self, id):
+        curso_db = curso_service.listar_curso_id(id)
+        if curso_db is None:
+            return make_response(jsonify("Curso não encontrado."), 400)
+
+        cs = curso_schema.CursoSchema()
+        validate = cs.validate(request.json)
+
+        if validate:
+            return make_response(jsonify(validate), 400)
+        else:
+            nome = request.json["nome"]
+            descricao = request.json["descricao"]
+            data_publicacao = request.json["data_publicacao"]
+            novo_curso = curso.Curso(nome=nome, descricao=descricao, data_publicacao=data_publicacao)
+            curso_service.atualizar_curso(curso_db, novo_curso)
+            curso_atualizado = curso_service.listar_curso_id(id)
+
+            return make_response(cs.jsonify(curso_atualizado), 200)
 
     def delete(self):
         pass

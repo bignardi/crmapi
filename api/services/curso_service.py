@@ -18,3 +18,9 @@ def listar_cursos():
 def listar_curso_id(id):
     curso = curso_model.Curso.query.filter_by(id=id).first()
     return curso
+
+def atualizar_curso(curso_anterior, curso_novo):
+    curso_anterior.nome = curso_novo.nome
+    curso_anterior.descricao = curso_novo.descricao
+    curso_anterior.data_publicacao = curso_novo.data_publicacao
+    db.session.commit()
